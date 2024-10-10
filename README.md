@@ -1,4 +1,4 @@
-# next-view-transitions
+# next-view-transitions-page-router
 
 Use [View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API) in Next.js App Router.
 
