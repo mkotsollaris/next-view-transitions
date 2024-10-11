@@ -1,6 +1,6 @@
 'use client'
 
-import { Link, useTransitionRouter } from 'next-view-transitions'
+import { Link, useTransitionRouter } from 'next-view-transitions-page-router'
 
 export default function Page() {
   const router = useTransitionRouter()
@@ -35,7 +35,7 @@ export default function Page() {
             e.preventDefault()
             router.push('/demo', {
               // Optional custom transition
-              onTransitionReady: slideInOut,
+              // onTransitionReady: slideInOut,
             })
           }}
           href='/demo'

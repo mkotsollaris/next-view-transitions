@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 
-export function useCustomPathname(): string {
-  const [pathname, setPathname] = useState<string>('');
+export function useCustomPathname() {
+  const [pathname, setPathname] = useState('');
 
   useEffect(() => {
     // Set the initial pathname
@@ -16,13 +16,13 @@ export function useCustomPathname(): string {
     window.addEventListener('popstate', handleRouteChange);
     
     // For Next.js page router
-    if (typeof window !== 'undefined' && window.next) {
+    if (typeof window !== 'undefined' && window.next?.router?.events) {
       window.next.router.events.on('routeChangeComplete', handleRouteChange);
     }
 
     return () => {
       window.removeEventListener('popstate', handleRouteChange);
-      if (typeof window !== 'undefined' && window.next) {
+      if (typeof window !== 'undefined' && window.next?.router?.events) {
         window.next.router.events.off('routeChangeComplete', handleRouteChange);
       }
     };

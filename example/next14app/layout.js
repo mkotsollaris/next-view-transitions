@@ -1,7 +1,7 @@
 import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 
-import { ViewTransitions } from 'next-view-transitions'
+import { ViewTransitions } from 'next-view-transitions-page-router'
 import './style.css'
 
 export const metadata = {
@@ -13,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <ViewTransitions>
-      <html lang='en' className={GeistSans.variable + ' ' + GeistMono.variable}>
+      <html lang='en'>
         <body>
           <h1>Next.js View Transitions</h1>
           <p>

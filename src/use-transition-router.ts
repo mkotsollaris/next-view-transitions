@@ -1,25 +1,21 @@
-import { useRouter as useNextRouter } from 'next/navigation'
+import { useRouter as useNextRouter } from 'next/router';
 import {startTransition, useCallback, useMemo} from "react";
 import { useSetFinishViewTransition } from "./transition-context";
-import {
-  AppRouterInstance,
-  NavigateOptions
-} from "next/dist/shared/lib/app-router-context.shared-runtime";
 
 export type TransitionOptions = {
   onTransitionReady?: () => void;
 };
 
-type NavigateOptionsWithTransition = NavigateOptions & TransitionOptions;
+type NavigateOptionsWithTransition = AnalyserNode;
 
-export type TransitionRouter = AppRouterInstance & {
+export type TransitionRouter = any & {
   push: (href: string, options?: NavigateOptionsWithTransition) => void;
   replace: (href: string, options?: NavigateOptionsWithTransition) => void;
 };
 
 export function useTransitionRouter() {
   const router = useNextRouter()
-  const finishViewTransition = useSetFinishViewTransition()
+  const setFinishViewTransition = useSetFinishViewTransition()
 
   const triggerTransition = useCallback((cb: () => void, { onTransitionReady }: TransitionOptions = {}) => {
     if ('startViewTransition' in document) {
@@ -29,22 +25,22 @@ export function useTransitionRouter() {
           new Promise<void>((resolve) => {
             startTransition(() => {
               cb();
-              finishViewTransition(() => resolve)
+              setFinishViewTransition(resolve)
             })
           })
       )
 
-        if (onTransitionReady) {
-          transition.ready.then(onTransitionReady);
-        }
-    }
-     else {
-        return cb()
+      if (onTransitionReady) {
+        transition.ready.then(onTransitionReady);
       }
-  }, [])
+    } else {
+      return cb()
+    }
+  }, [setFinishViewTransition])
 
   const push = useCallback((
     href: string,
+    // @ts-ignore 
     { onTransitionReady, ...options }: NavigateOptionsWithTransition = {}
   ) => {
     triggerTransition(() => router.push(href, options), {
@@ -54,6 +50,7 @@ export function useTransitionRouter() {
 
   const replace = useCallback((
     href: string,
+    // @ts-ignore 
     { onTransitionReady, ...options }: NavigateOptionsWithTransition = {}
   ) => {
     triggerTransition(() => router.replace(href, options), {

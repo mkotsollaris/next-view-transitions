@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, use } from 'react'
+import { useEffect, useRef, useState } from 'react'
 // import { usePathname } from 'next/navigation'
 import { useCustomPathname } from './use-custom-pathname'
 import { useHash } from './use-hash'
@@ -21,6 +21,8 @@ export function useBrowserNativeTransitions() {
         () => void
       ]
   >(null)
+
+  const [isTransitionStarted, setIsTransitionStarted] = useState(false)
 
   useEffect(() => {
     if (!('startViewTransition' in document)) {
@@ -55,9 +57,8 @@ export function useBrowserNativeTransitions() {
   }, [])
 
   if (currentViewTransition && currentPathname.current !== pathname) {
-    // Whenever the pathname changes, we block the rendering of the new route
-    // until the view transition is started (i.e. DOM screenshotted).
-    use(currentViewTransition[0])
+    // Start the transition
+    currentViewTransition[0].then(() => setIsTransitionStarted(true))
   }
 
   // Keep the transition reference up-to-date.
@@ -77,4 +78,6 @@ export function useBrowserNativeTransitions() {
       transitionRef.current = null
     }
   }, [hash, pathname]);
+
+  return isTransitionStarted
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useTransitionRouter } from 'next-view-transitions'
+import { useTransitionRouter } from 'next-view-transitions-page-router'
 
 export default function Page() {
   const router = useTransitionRouter()
